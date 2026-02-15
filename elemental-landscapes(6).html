@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elemental Landscapes - Western NC Landscape Design & Construction</title>
+    <meta name="description" content="Fully licensed and insured landscape contractor serving Western NC. Veteran-owned with 12+ years experience in design and construction.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --stone: #3a3632;
+            --earth: #5c4f3d;
+            --moss: #6b7d5c;
+            --sage: #8b9d83;
+            --sand: #d4c5a9;
+            --cream: #f5f1e8;
+            --white: #ffffff;
+            
+            --max: 1400px;
+            --header-height: 80px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--cream);
+            color: var(--stone);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Subtle texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: overlay;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: rgba(245, 241, 232, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(58, 54, 50, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 100%;
+            width: auto;
+            max-width: 400px;
+        }
+        
+        nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--stone);
+            font-weight: 500;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--moss);
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        .menu-toggle span {
+            width: 28px;
+            height: 2px;
+            background: var(--stone);
+            transition: all 0.3s ease;
+        }
+        
+        /* Hero */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .hero-background {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        
+        .hero-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .hero-background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                rgba(58, 54, 50, 0.4) 0%,
+                rgba(58, 54, 50, 0.6) 100%
+            );
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--white);
+            max-width: 900px;
+            padding: 0 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+        
+        .hero-content h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-content p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            opacity: 0.95;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Main content */
+        main {
+            padding-top: 0;
+        }
+        
+        .section {
+            padding: 6rem 2rem;
+        }
+        
+        .section-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+            color: var(--stone);
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--earth);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Services */
+        .services {
+            background: var(--white);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-item {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .service-item h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            color: var(--stone);
+            margin-bottom: 0.5rem;
+        }
+        
+        .service-item p {
+            color: var(--earth);
+            font-size: 0.95rem;
+        }
+        
+        /* Gallery */
+        .gallery {
+            background: var(--cream);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Before/After Section */
+        .before-after-section {
+            background: var(--stone);
+            color: var(--white);
+        }
+        
+        .before-after-section .section-header h2,
+        .before-after-section .section-header p {
+            color: var(--white);
+        }
+        
+        .comparison-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            aspect-ratio: 16/10;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .comparison-slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .after-image {
+            clip-path: inset(0 50% 0 0);
+        }
+        
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: var(--white);
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+        
+        .slider-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .slider-handle::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: var(--stone);
+            font-weight: bold;
+        }
+        
+        .slider-labels {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+        
+        .slider-label {
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        /* About */
+        .about {
+            background: var(--white);
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--earth);
+        }
+        
+        .about-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-content strong {
+            color: var(--stone);
+            font-weight: 600;
+        }
+        
+        /* Contact */
+        .contact {
+            background: var(--cream);
+        }
+        
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .contact-info {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        .contact-info h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: var(--stone);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info p {
+            color: var(--earth);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .contact-link {
+            display: inline-block;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: var(--moss);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border: 2px solid var(--moss);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            background: var(--moss);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(107, 125, 92, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--stone);
+            color: var(--cream);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+        }
+        
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                position: absolute;
+                top: var(--header-height);
+                left: 0;
+                right: 0;
+                background: var(--cream);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .section {
+                padding: 4rem 1.5rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <div class="header-inner">
+        <div class="logo">
+            <img src="logo-optimized.png" alt="Elemental Landscapes">
+        </div>
+        
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <nav id="nav">
+            <a href="#gallery">Gallery</a>
+            <a href="#before-after">Before & After</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-background">
+        <!-- Replace with your best project photo -->
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=2400&q=80" alt="Landscape project">
+    </div>
+    <div class="hero-content">
+        <h1>Welcome Home</h1>
+        <p>Landscape design and construction in Western North Carolina</p>
+    </div>
+</section>
+
+<main>
+    <!-- Services -->
+    <section class="services section">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2>What We Build</h2>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-item">
+                    <h3>Retaining Walls</h3>
+                    <p>Structural & decorative solutions</p>
+                </div>
+                <div class="service-item">
+                    <h3>Patios & Hardscaping</h3>
+                    <p>Durable outdoor living spaces</p>
+                </div>
+                <div class="service-item">
+                    <h3>Water Features</h3>
+                    <p>Ponds, streams & fountains</p>
+                </div>
+                <div class="service-item">
+                    <h3>Outdoor Kitchens</h3>
+                    <p>Complete cooking & entertaining areas</p>
+                </div>
+                <div class="service-item">
+                    <h3>Landscape Design</h3>
+                    <p>Planting & site planning</p>
+                </div>
+                <div class="service-item">
+                    <h3>Lighting</h3>
+                    <p>Low-voltage landscape illumination</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery -->
+    <section id="gallery" class="gallery section">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2>Our Work</h2>
+                <p>Selected projects from Western North Carolina</p>
+            </div>
+            
+            <div class="gallery-grid">
+                <!-- Gallery Item 1 - Replace src with your images -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Landscape project">
+                </div>
+                
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" alt="Retaining wall">
+                </div>
+                
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1600607687644-c7171b42498b?auto=format&fit=crop&w=800&q=80" alt="Patio installation">
+                </div>
+                
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80" alt="Water feature">
+                </div>
+                
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80" alt="Outdoor kitchen">
+                </div>
+                
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80" alt="Landscape design">
+                </div>
+                
+                <!-- Add more gallery items as needed - just copy/paste this block -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Before/After -->
+    <section id="before-after" class="before-after-section section">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2>Before & After</h2>
+                <p>Drag the slider to see the transformation</p>
+            </div>
+            
+            <!-- Comparison Slider 1 -->
+            <div class="comparison-slider" data-slider="1">
+                <img class="before-image" src="https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?auto=format&fit=crop&w=1600&q=80" alt="Before">
+                <img class="after-image" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80" alt="After">
+                <div class="slider-handle"></div>
+                <div class="slider-labels">
+                    <span class="slider-label">BEFORE</span>
+                    <span class="slider-label">AFTER</span>
+                </div>
+            </div>
+            
+            <!-- Comparison Slider 2 -->
+            <div class="comparison-slider" data-slider="2">
+                <img class="before-image" src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1600&q=80" alt="Before">
+                <img class="after-image" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80" alt="After">
+                <div class="slider-handle"></div>
+                <div class="slider-labels">
+                    <span class="slider-label">BEFORE</span>
+                    <span class="slider-label">AFTER</span>
+                </div>
+            </div>
+            
+            <!-- Add more sliders as needed - just copy/paste this block -->
+        </div>
+    </section>
+    
+    <!-- About -->
+    <section id="about" class="about section">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2>About</h2>
+            </div>
+            
+            <div class="about-content">
+                <p>
+                    Elemental Landscapes is a <strong>fully licensed and insured</strong> landscape contractor 
+                    serving Western North Carolina.
+                </p>
+                <p>
+                    We specialize in landscape design and construction, offering services such as retaining walls, 
+                    grading, mulching, landscape lighting, paving, water features, planting, sod installation, 
+                    outdoor kitchens, artificial turf, and patios.
+                </p>
+                <p>
+                    We are a <strong>Veteran-owned business</strong> with over <strong>12 years of experience</strong> 
+                    in landscape construction and design.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact -->
+    <section id="contact" class="contact section">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2>Get in Touch</h2>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Project Inquiries</h3>
+                    <p>For landscape design and construction projects in Western NC</p>
+                    <!-- Update with your phone number or preferred contact method -->
+                    <a href="tel:+18289896156" class="contact-link">(828) 989-6156</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; <span id="year"></span> Elemental Landscapes · Western North Carolina</p>
+    <p style="margin-top: 0.5rem;">Licensed & Insured · Veteran Owned</p>
+</footer>
+
+<script>
+// Update year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Header scroll effect
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+// Mobile menu toggle
+function toggleMenu() {
+    const nav = document.getElementById('nav');
+    nav.classList.toggle('active');
+}
+
+// Close menu when clicking a link
+document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('nav').classList.remove('active');
+    });
+});
+
+// Before/After Slider Functionality
+document.querySelectorAll('.comparison-slider').forEach(slider => {
+    const handle = slider.querySelector('.slider-handle');
+    const afterImage = slider.querySelector('.after-image');
+    let isDragging = false;
+    
+    function updateSlider(x) {
+        const rect = slider.getBoundingClientRect();
+        const position = Math.max(0, Math.min(x - rect.left, rect.width));
+        const percentage = (position / rect.width) * 100;
+        
+        handle.style.left = percentage + '%';
+        afterImage.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+    }
+    
+    handle.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        e.preventDefault();
+    });
+    
+    slider.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            updateSlider(e.clientX);
+        }
+    });
+    
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+    
+    // Touch support
+    handle.addEventListener('touchstart', (e) => {
+        isDragging = true;
+    });
+    
+    slider.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+            updateSlider(e.touches[0].clientX);
+        }
+    });
+    
+    document.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+    
+    // Click anywhere on slider to position
+    slider.addEventListener('click', (e) => {
+        updateSlider(e.clientX);
+    });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            const headerOffset = 100;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
