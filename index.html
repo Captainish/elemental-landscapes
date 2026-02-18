@@ -88,6 +88,13 @@
             height: 90px;
             display: flex;
             align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .header-phone:hover {
+            opacity: 0.8;
         }
         
         .header-phone img {
@@ -638,6 +645,42 @@
             box-shadow: 0 10px 30px rgba(107, 125, 92, 0.3);
         }
         
+        /* Phone Options - Call & Text */
+        .phone-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .phone-call-btn,
+        .phone-text-btn {
+            flex: 1;
+            min-width: 200px;
+            max-width: 250px;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .phone-icon {
+            font-size: 1.3rem;
+        }
+        
+        .phone-text-btn {
+            background: transparent;
+            color: var(--moss);
+            border: 2px solid var(--moss);
+        }
+        
+        .phone-text-btn:hover {
+            background: var(--moss);
+            color: var(--white);
+        }
+        
         /* Contact Form Styles */
         .contact-form-container {
             margin-top: 2rem;
@@ -785,6 +828,31 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* Mobile Landscape Mode - Hide Header */
+        @media (max-width: 926px) and (orientation: landscape) {
+            header {
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            main {
+                padding-top: 0;
+            }
+            
+            .hero {
+                min-height: 100vh;
+            }
+            
+            .section {
+                padding-top: 2rem;
+            }
+            
+            /* Show header when scrolling up */
+            header.show {
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -796,9 +864,9 @@
             <img src="headlogo.jpg" alt="Elemental Landscapes">
         </div>
         
-        <div class="header-phone">
-            <img src="header-phone.jpg" alt="Contact Elemental Landscapes">
-        </div>
+        <a href="#contact" class="header-phone">
+            <img src="header-phone.jpg" alt="Contact Elemental Landscapes - Click to get in touch">
+        </a>
     </div>
 </header>
 
@@ -1055,15 +1123,22 @@
                     <h3>Project Inquiries</h3>
                     <p>For landscape design and construction projects in Western NC</p>
                     
-                    <!-- PHONE NUMBER (Obfuscated) -->
-                    <a href="#" id="phone-link" class="contact-link" style="margin-bottom: 2rem; display: inline-block;">(828) 989-6156</a>
+                    <!-- PHONE NUMBER with Call & Text Options -->
+                    <div class="phone-options">
+                        <a href="tel:+18289896156" class="contact-link phone-call-btn">
+                            <span class="phone-icon">📞</span> Call (828) 989-6156
+                        </a>
+                        <a href="sms:+18289896156" class="contact-link phone-text-btn">
+                            <span class="phone-icon">💬</span> Text Us
+                        </a>
+                    </div>
                     
                     <!-- CONTACT FORM -->
                     <div class="contact-form-container">
                         <h4 style="margin-bottom: 1rem; font-size: 1.3rem;">Or Send Us a Message</h4>
                         
                         <!-- CHANGE EMAIL HERE: Replace YOUR_FORMSPREE_ID with your actual ID -->
-                        <form id="contact-form" action="https://formspree.io/f/mwvnqkeg" method="POST">
+                        <form id="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
                             <input type="hidden" name="_subject" value="New inquiry from Elemental Landscapes website">
                             
                             <div class="form-group">
@@ -1129,18 +1204,6 @@
 <script>
 // Update year
 document.getElementById('year').textContent = new Date().getFullYear();
-
-// Phone number spam protection (obfuscated until clicked)
-const phoneLink = document.getElementById('phone-link');
-if (phoneLink) {
-    phoneLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        // Only create tel link when user clicks (bots don't click)
-        const phone = '8289896156';
-        this.href = 'tel:+1' + phone;
-        window.location.href = this.href;
-    });
-}
 
 // Header scroll effect
 const header = document.getElementById('header');
