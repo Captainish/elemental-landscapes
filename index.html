@@ -484,6 +484,13 @@
             opacity: 0.9;
         }
         
+        /* Hide caption on mobile - it blocks the image */
+        @media (max-width: 768px) {
+            .lightbox-caption {
+                display: none;
+            }
+        }
+        
         /* Before/After Section */
         .before-after-section {
             background: var(--stone);
@@ -1284,7 +1291,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Lightbox functionality
+// Lightbox functionality with proper history handling
 const galleryImages = [];
 let currentImageIndex = 0;
 
@@ -1315,12 +1322,20 @@ function openLightbox(index) {
     
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    // Add to browser history so back button works
+    history.pushState({ lightbox: true, index: index }, '', '#gallery-image-' + index);
 }
 
 function closeLightbox() {
     const lightbox = document.getElementById('lightbox');
     lightbox.classList.remove('active');
     document.body.style.overflow = 'auto';
+    
+    // Go back in history if we pushed a state
+    if (window.location.hash.startsWith('#gallery-image-')) {
+        history.back();
+    }
 }
 
 function changeImage(direction) {
@@ -1340,7 +1355,20 @@ function changeImage(direction) {
     img.alt = galleryImages[currentImageIndex].alt;
     title.textContent = galleryImages[currentImageIndex].title;
     desc.textContent = galleryImages[currentImageIndex].desc;
+    
+    // Update URL without adding to history
+    history.replaceState({ lightbox: true, index: currentImageIndex }, '', '#gallery-image-' + currentImageIndex);
 }
+
+// Handle browser back button
+window.addEventListener('popstate', function(event) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox.classList.contains('active')) {
+        // Close lightbox without going back again
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
 
 // Close lightbox with Escape key
 document.addEventListener('keydown', (e) => {
