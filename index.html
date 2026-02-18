@@ -638,6 +638,83 @@
             box-shadow: 0 10px 30px rgba(107, 125, 92, 0.3);
         }
         
+        /* Contact Form Styles */
+        .contact-form-container {
+            margin-top: 2rem;
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1.1rem;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+            color: var(--stone);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--moss);
+            box-shadow: 0 0 0 3px rgba(107, 125, 92, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-submit-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--moss);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .form-submit-btn:hover {
+            background: var(--accent-bright);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(107, 125, 92, 0.3);
+        }
+        
+        .form-submit-btn:disabled {
+            background: var(--sand);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        #form-status {
+            text-align: center;
+        }
+        
+        #form-status.success {
+            color: var(--moss);
+            font-weight: 600;
+        }
+        
+        #form-status.error {
+            color: #c53030;
+            font-weight: 600;
+        }
+        
         /* Footer */
         footer {
             background: var(--stone);
@@ -970,23 +1047,59 @@
         </div>
     </section>
     
-    <!-- Contact - NO "Get in Touch" HEADING -->
+    <!-- Contact - With Contact Form -->
     <section id="contact" class="contact section">
         <div class="section-inner">
             <div class="contact-content">
                 <div class="contact-info">
                     <h3>Project Inquiries</h3>
                     <p>For landscape design and construction projects in Western NC</p>
-                    <!-- SPAM PROTECTION OPTIONS - Choose one below -->
                     
-                    <!-- OPTION 1: Image (Best Protection, Not Clickable) -->
-                    <!-- <img src="phone-number.png" alt="Call 828-989-6156" style="max-width: 300px; cursor: pointer;"> -->
+                    <!-- PHONE NUMBER (Obfuscated) -->
+                    <a href="#" id="phone-link" class="contact-link" style="margin-bottom: 2rem; display: inline-block;">(828) 989-6156</a>
                     
-                    <!-- OPTION 2: Obfuscated Text (Good Protection, Clickable) -->
-                    <a href="#" id="phone-link" class="contact-link">(828) 989-6156</a>
-                    
-                    <!-- OPTION 3: Direct Link (Easy to Use, Bots Can Scrape) -->
-                    <!-- <a href="tel:+18289896156" class="contact-link">(828) 989-6156</a> -->
+                    <!-- CONTACT FORM -->
+                    <div class="contact-form-container">
+                        <h4 style="margin-bottom: 1rem; font-size: 1.3rem;">Or Send Us a Message</h4>
+                        
+                        <!-- CHANGE EMAIL HERE: Replace YOUR_FORMSPREE_ID with your actual ID -->
+                        <form id="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+                            <input type="hidden" name="_subject" value="New inquiry from Elemental Landscapes website">
+                            
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Your Name *" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="email" name="email" placeholder="Your Email *" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="tel" name="phone" placeholder="Phone Number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <select name="project-type">
+                                    <option value="">Project Type</option>
+                                    <option value="Retaining Walls">Retaining Walls</option>
+                                    <option value="Patios & Hardscaping">Patios & Hardscaping</option>
+                                    <option value="Water Features">Water Features</option>
+                                    <option value="Outdoor Kitchens">Outdoor Kitchens</option>
+                                    <option value="Landscape Design">Landscape Design</option>
+                                    <option value="Lighting">Lighting</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea name="message" rows="5" placeholder="Tell us about your project... *" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="form-submit-btn">Send Message</button>
+                            
+                            <p id="form-status" style="margin-top: 1rem; font-size: 0.95rem;"></p>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1183,6 +1296,49 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
         closeLightbox();
     }
 });
+
+// Contact Form Handling
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = contactForm.querySelector('.form-submit-btn');
+        const originalText = submitBtn.textContent;
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        formStatus.textContent = '';
+        formStatus.className = '';
+        
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: new FormData(contactForm),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                formStatus.textContent = 'Thank you! We\'ll be in touch soon.';
+                formStatus.className = 'success';
+                contactForm.reset();
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            formStatus.textContent = 'Oops! There was a problem. Please try calling instead.';
+            formStatus.className = 'error';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    });
+}
 </script>
 
 </body>
