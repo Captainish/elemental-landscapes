@@ -299,12 +299,53 @@
             background: var(--cream);
         }
         
+        .gallery-scroll-wrapper {
+            position: relative;
+            max-width: 100%;
+        }
+        
+        .gallery-scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--moss);
+            color: var(--moss);
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gallery-scroll-arrow:hover {
+            background: var(--moss);
+            color: var(--white);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .gallery-scroll-left {
+            left: -25px;
+        }
+        
+        .gallery-scroll-right {
+            right: -25px;
+        }
+        
         .gallery-scroll-container {
             overflow-x: auto;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
             scrollbar-color: var(--moss) var(--sand);
+            scroll-behavior: smooth;
         }
         
         .gallery-scroll-container::-webkit-scrollbar {
@@ -808,6 +849,16 @@
                 padding: 4rem 1.5rem;
             }
             
+            .gallery-scroll-arrow {
+                display: none;
+            }
+            
+            .gallery-scroll-left,
+            .gallery-scroll-right {
+                left: auto;
+                right: auto;
+            }
+            
             .gallery-item {
                 flex: 0 0 280px;
                 height: 220px;
@@ -912,8 +963,12 @@
             </div>
             
             <!-- Horizontal Scrolling Gallery -->
-            <div class="gallery-scroll-container">
-                <div class="gallery-grid">
+            <div class="gallery-scroll-wrapper">
+                <button class="gallery-scroll-arrow gallery-scroll-left" onclick="scrollGallery('left')" aria-label="Scroll left">
+                    ‹
+                </button>
+                <div class="gallery-scroll-container" id="gallery-container">
+                    <div class="gallery-grid">
                     <!-- Gallery Item 1 -->
                     <div class="gallery-item" onclick="openLightbox(0)">
                         <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" alt="Stone retaining wall with landscaping">
@@ -1025,6 +1080,10 @@
                     <!-- TO ADD MORE: Copy a gallery-item block, paste here, update onclick="openLightbox(X)" number -->
                 </div>
             </div>
+            <button class="gallery-scroll-arrow gallery-scroll-right" onclick="scrollGallery('right')" aria-label="Scroll right">
+                ›
+            </button>
+        </div>
             
             <!-- Scroll hint for mobile -->
             <p style="text-align: center; margin-top: 1.5rem; color: var(--earth); font-size: 0.95rem;">
@@ -1215,6 +1274,24 @@
 <script>
 // Update year
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// Gallery scroll arrows
+function scrollGallery(direction) {
+    const container = document.getElementById('gallery-container');
+    const scrollAmount = 400; // Scroll by ~1 image width
+    
+    if (direction === 'left') {
+        container.scrollBy({
+            left: -scrollAmount,
+            behavior: 'smooth'
+        });
+    } else {
+        container.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+}
 
 // Header scroll effect
 const header = document.getElementById('header');
