@@ -1443,12 +1443,18 @@ let touchEndX = 0;
 const lightboxEl = document.getElementById('lightbox');
 
 lightboxEl.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
+    // Only handle swipes when lightbox is active
+    if (lightboxEl.classList.contains('active')) {
+        touchStartX = e.changedTouches[0].screenX;
+    }
 }, false);
 
 lightboxEl.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleLightboxSwipe();
+    // Only handle swipes when lightbox is active
+    if (lightboxEl.classList.contains('active')) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleLightboxSwipe();
+    }
 }, false);
 
 function handleLightboxSwipe() {
