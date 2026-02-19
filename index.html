@@ -1461,7 +1461,38 @@ document.addEventListener('keydown', (e) => {
         changeImage(1);
     }
 });
+// Mobile swipe support for lightbox
+let touchStartX = 0;
+let touchEndX = 0;
+let touchStartY = 0;
+let touchEndY = 0;
 
+const lightboxElement = document.getElementById('lightbox');
+
+lightboxElement.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}, false);
+
+lightboxElement.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+}, false);
+
+function handleSwipe() {
+    const xDiff = touchStartX - touchEndX;
+    const yDiff = Math.abs(touchStartY - touchEndY);
+    const swipeThreshold = 50;
+    
+    if (Math.abs(xDiff) > swipeThreshold && Math.abs(xDiff) > yDiff) {
+        if (xDiff > 0) {
+            changeImage(1);
+        } else {
+            changeImage(-1);
+        }
+    }
+}
 // Close lightbox when clicking outside image
 document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target.id === 'lightbox') {
