@@ -864,9 +864,18 @@
                 height: 220px;
             }
             
-            /* Hide lightbox arrows on mobile - swipe only */
             .lightbox-arrow {
-                display: none;
+                width: 50px;
+                height: 50px;
+                font-size: 30px;
+            }
+            
+            .lightbox-prev {
+                left: 10px;
+            }
+            
+            .lightbox-next {
+                right: 10px;
             }
             
             .lightbox-close {
@@ -1140,8 +1149,8 @@
                     <p>Fire features define outdoor rooms. We craft custom fireplaces and fire pits that create natural gathering places.  Whether it's a towering stone chimney or an intimate circle nestled in a patio. Stone hearths, built-in seating, and thoughtful placement turn your space into a destination with purpose and atmosphere.  The result is an outdoor room with a view to the sky where memories are forged.</p>
                 </div>
                 <div class="service-item">
-                    <h3>Water Features</h3>
-                    <p>Ponds, streams & fountains</p>
+                    <h3>Landscape Design</h3>
+                    <p>Planting & site planning</p>
                 </div>
                 <div class="service-item">
                     <h3>Lighting</h3>
@@ -1269,7 +1278,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // Gallery scroll arrows
 function scrollGallery(direction) {
     const container = document.getElementById('gallery-container');
-    const scrollAmount = 400;
+    const scrollAmount = 400; // Scroll by ~1 image width
     
     if (direction === 'left') {
         container.scrollBy({
@@ -1306,7 +1315,7 @@ document.querySelectorAll('.comparison-slider').forEach(slider => {
         const percentage = (position / rect.width) * 100;
         
         handle.style.left = percentage + '%';
-        afterImage.style.clipPath = \`inset(0 \${100 - percentage}% 0 0)\`;
+        afterImage.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
     }
     
     handle.addEventListener('mousedown', (e) => {
@@ -1324,6 +1333,7 @@ document.querySelectorAll('.comparison-slider').forEach(slider => {
         isDragging = false;
     });
     
+    // Touch support
     handle.addEventListener('touchstart', (e) => {
         isDragging = true;
     });
@@ -1338,6 +1348,7 @@ document.querySelectorAll('.comparison-slider').forEach(slider => {
         isDragging = false;
     });
     
+    // Click anywhere on slider to position
     slider.addEventListener('click', (e) => {
         updateSlider(e.clientX);
     });
@@ -1361,7 +1372,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Lightbox functionality with proper history handling and swipe support
+// Lightbox functionality with proper history handling
 const galleryImages = [];
 let currentImageIndex = 0;
 
@@ -1393,6 +1404,7 @@ function openLightbox(index) {
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
     
+    // Add to browser history so back button works
     history.pushState({ lightbox: true, index: index }, '', '#gallery-image-' + index);
 }
 
@@ -1401,6 +1413,7 @@ function closeLightbox() {
     lightbox.classList.remove('active');
     document.body.style.overflow = 'auto';
     
+    // Go back in history if we pushed a state
     if (window.location.hash.startsWith('#gallery-image-')) {
         history.back();
     }
@@ -1424,6 +1437,7 @@ function changeImage(direction) {
     title.textContent = galleryImages[currentImageIndex].title;
     desc.textContent = galleryImages[currentImageIndex].desc;
     
+    // Update URL without adding to history
     history.replaceState({ lightbox: true, index: currentImageIndex }, '', '#gallery-image-' + currentImageIndex);
 }
 
@@ -1431,45 +1445,13 @@ function changeImage(direction) {
 window.addEventListener('popstate', function(event) {
     const lightbox = document.getElementById('lightbox');
     if (lightbox.classList.contains('active')) {
+        // Close lightbox without going back again
         lightbox.classList.remove('active');
         document.body.style.overflow = 'auto';
     }
 });
 
-// Swipe support for lightbox on mobile
-let touchStartX = 0;
-let touchEndX = 0;
-
-const lightboxEl = document.getElementById('lightbox');
-
-lightboxEl.addEventListener('touchstart', (e) => {
-    // Only handle swipes when lightbox is active
-    if (lightboxEl.classList.contains('active')) {
-        touchStartX = e.changedTouches[0].screenX;
-    }
-}, false);
-
-lightboxEl.addEventListener('touchend', (e) => {
-    // Only handle swipes when lightbox is active
-    if (lightboxEl.classList.contains('active')) {
-        touchEndX = e.changedTouches[0].screenX;
-        handleLightboxSwipe();
-    }
-}, false);
-
-function handleLightboxSwipe() {
-    const swipeThreshold = 50;
-    
-    if (touchEndX < touchStartX - swipeThreshold) {
-        changeImage(1); // Swipe left = next image
-    }
-    
-    if (touchEndX > touchStartX + swipeThreshold) {
-        changeImage(-1); // Swipe right = previous image
-    }
-}
-
-// Keyboard navigation
+// Close lightbox with Escape key
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeLightbox();
@@ -1498,6 +1480,7 @@ if (contactForm) {
         const submitBtn = contactForm.querySelector('.form-submit-btn');
         const originalText = submitBtn.textContent;
         
+        // Show loading state
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
         formStatus.textContent = '';
