@@ -1492,7 +1492,6 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 });
 
 // Contact Form Handling
-// Contact Form Handling
 const contactForm = document.getElementById('contact-form');
 const formStatus = document.getElementById('form-status');
 
@@ -1509,63 +1508,29 @@ if (contactForm) {
         formStatus.className = '';
         
         try {
+            const formData = new FormData(contactForm);
             const response = await fetch(contactForm.action, {
                 method: 'POST',
-                body: new FormData(contactForm),
+                body: formData,
                 headers: {
                     'Accept': 'application/json'
                 }
             });
+            
+            const data = await response.json();
             
             if (response.ok) {
                 formStatus.textContent = 'Thank you! We\'ll be in touch soon.';
                 formStatus.className = 'success';
                 contactForm.reset();
             } else {
-                throw new Error('Form submission failed');
+                formStatus.textContent = 'Error: ' + (data.error || 'Please try again');
+                formStatus.className = 'error';
             }
         } catch (error) {
-            formStatus.textContent = 'Oops! There was a problem. Please try calling instead.';
+            formStatus.textContent = 'Network error. Please try calling instead.';
             formStatus.className = 'error';
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-        }
-    });
-}
-
-if (contactForm) {
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitBtn = contactForm.querySelector('.form-submit-btn');
-        const originalText = submitBtn.textContent;
-        
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-        formStatus.textContent = '';
-        formStatus.className = '';
-        
-        try {
-            const response = await fetch(contactForm.action, {
-                method: 'POST',
-                body: new FormData(contactForm),
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            
-            if (response.ok) {
-                formStatus.textContent = 'Thank you! We\'ll be in touch soon.';
-                formStatus.className = 'success';
-                contactForm.reset();
-            } else {
-                throw new Error('Form submission failed');
-            }
-        } catch (error) {
-            formStatus.textContent = 'Oops! There was a problem. Please try calling instead.';
-            formStatus.className = 'error';
+            console.error('Form error:', error);
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
