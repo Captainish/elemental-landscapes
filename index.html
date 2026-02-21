@@ -621,7 +621,93 @@
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-        
+        /* Slider Navigation */
+.slider-navigation-wrapper {
+    position: relative;
+}
+
+.comparison-slider {
+    display: none;
+}
+
+.comparison-slider.active {
+    display: block;
+}
+
+.slider-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--white);
+    color: var(--stone);
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.slider-nav-btn:hover {
+    background: var(--white);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.slider-nav-prev {
+    left: -80px;
+}
+
+.slider-nav-next {
+    right: -80px;
+}
+
+.slider-dots {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+    background: var(--white);
+    transform: scale(1.3);
+}
+
+.slider-dot:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 1024px) {
+    .slider-nav-prev {
+        left: 10px;
+    }
+    
+    .slider-nav-next {
+        right: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .slider-nav-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 35px;
+    }
+}
         /* About */
         .about {
             background: var(--white);
@@ -1101,16 +1187,51 @@
                 <p>Drag the slider to see the transformation</p>
             </div>
             
-            <!-- Comparison Slider 1 -->
-            <div class="comparison-slider" data-slider="1">
-                <img class="before-image" src="pool-before.jpg" alt="Pool area before landscaping">
-                <img class="after-image" src="pool-after.jpg" alt="Pool area after landscaping">
-                <div class="slider-handle"></div>
-                <div class="slider-labels">
-                    <span class="slider-label">BEFORE</span>
-                    <span class="slider-label">AFTER</span>
-                </div>
-            </div>
+<!-- Comparison Slider Container with Navigation -->
+<div class="slider-navigation-wrapper">
+    <button class="slider-nav-btn slider-nav-prev" onclick="changeSlider(-1)">‹</button>
+    
+    <div class="comparison-slider active" data-slider="1">
+        <img class="before-image" src="pool-before.jpg" alt="Pool area before landscaping">
+        <img class="after-image" src="pool-after.jpg" alt="Pool area after landscaping">
+        <div class="slider-handle"></div>
+        <div class="slider-labels">
+            <span class="slider-label">BEFORE</span>
+            <span class="slider-label">AFTER</span>
+        </div>
+    </div>
+    
+    <div class="comparison-slider" data-slider="2">
+        <img class="before-image" src="before-2.jpg" alt="Before">
+        <img class="after-image" src="after-2.jpg" alt="After">
+        <div class="slider-handle"></div>
+        <div class="slider-labels">
+            <span class="slider-label">BEFORE</span>
+            <span class="slider-label">AFTER</span>
+        </div>
+    </div>
+    
+    <div class="comparison-slider" data-slider="3">
+        <img class="before-image" src="before-3.jpg" alt="Before">
+        <img class="after-image" src="after-3.jpg" alt="After">
+        <div class="slider-handle"></div>
+        <div class="slider-labels">
+            <span class="slider-label">BEFORE</span>
+            <span class="slider-label">AFTER</span>
+        </div>
+    </div>
+    
+    <button class="slider-nav-btn slider-nav-next" onclick="changeSlider(1)">›</button>
+</div>
+
+<p style="text-align: center; margin-top: 1rem; color: white; font-size: 0.95rem;" id="slider-caption">Pool deck transformation - Hendersonville, NC</p>
+
+<!-- Slider Dots -->
+<div class="slider-dots" style="text-align: center; margin-top: 1.5rem;">
+    <span class="slider-dot active" onclick="goToSlider(0)"></span>
+    <span class="slider-dot" onclick="goToSlider(1)"></span>
+    <span class="slider-dot" onclick="goToSlider(2)"></span>
+</div>
             
             <p style="text-align: center; margin-top: 1rem; color: white; font-size: 0.95rem;">Pool deck transformation - Hendersonville, NC</p>
         </div>
