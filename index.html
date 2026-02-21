@@ -1482,7 +1482,45 @@ document.querySelectorAll('.comparison-slider').forEach(slider => {
         updateSlider(e.clientX);
     });
 });
+// Before/After Slider Navigation
+let currentSliderIndex = 0;
+const allSliders = document.querySelectorAll('.comparison-slider');
+const sliderDots = document.querySelectorAll('.slider-dot');
+const sliderCaption = document.getElementById('slider-caption');
 
+const captions = [
+    "Pool deck transformation - Hendersonville, NC",
+    "Your second project caption here",
+    "Your third project caption here"
+];
+
+function changeSlider(direction) {
+    allSliders[currentSliderIndex].classList.remove('active');
+    sliderDots[currentSliderIndex].classList.remove('active');
+    
+    currentSliderIndex += direction;
+    
+    if (currentSliderIndex < 0) {
+        currentSliderIndex = allSliders.length - 1;
+    } else if (currentSliderIndex >= allSliders.length) {
+        currentSliderIndex = 0;
+    }
+    
+    allSliders[currentSliderIndex].classList.add('active');
+    sliderDots[currentSliderIndex].classList.add('active');
+    sliderCaption.textContent = captions[currentSliderIndex];
+}
+
+function goToSlider(index) {
+    allSliders[currentSliderIndex].classList.remove('active');
+    sliderDots[currentSliderIndex].classList.remove('active');
+    
+    currentSliderIndex = index;
+    
+    allSliders[currentSliderIndex].classList.add('active');
+    sliderDots[currentSliderIndex].classList.add('active');
+    sliderCaption.textContent = captions[currentSliderIndex];
+}
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
